@@ -1,4 +1,6 @@
 # Cafeteria_management_project_in_C++
+<br>
+<br>
 Introduction<br>
 The Cafeteria Management System is a C++ program designed to simulate the operations of a cafeteria, allowing customers to order items based on the time of day. The system categorizes menu items into breakfast, lunch, snacks, and dinner, each managed by a corresponding class. The program leverages various Object-Oriented Programming (OOP) concepts such as encapsulation, inheritance, polymorphism, and more to achieve modularity, code reuse, and simplicity in managing complex operations.
 <br>
