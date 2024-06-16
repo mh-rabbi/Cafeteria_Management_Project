@@ -15,8 +15,9 @@ using namespace std;
 #define WHITE   "\033[37m"
 
 //System time and its functions.
-int currentTime() {
-    cout << endl << setw(12) << GREEN << "PANORAMIC_CAFETERIA_MANAGEMENT_SYSTEM" << RESET << endl; 
+int currentTime()
+{
+    cout << endl << setw(12) << GREEN << "PANORAMIC_CAFETERIA_MANAGEMENT_SYSTEM" << RESET << endl;
     time_t t = time(NULL);
     struct tm date = *localtime(&t);
     cout << setw(22) << BLUE << "---------------------" << RESET <<endl;
@@ -26,26 +27,29 @@ int currentTime() {
     cout << endl;
     // return date.tm_hour;
     return 9;
-    
+
 }
 
 
 //Items representation.
-void itemsBar(){
+void itemsBar()
+{
     cout << setw(19) <<setfill(' ') << "Items"  <<setw(19) <<"Prices"  <<setw(21) << "Quantity"<<endl;
     cout << setw(20)  <<"---------" <<setw(20) <<"---------" <<setw(20) <<"---------" <<endl;
 }
 
 
 //Quantity of the items.
-int Quantity(){
+int Quantity()
+{
     int quantity = 100;
     return quantity;
 }
 
 
 //creating structure sor vector, will use to add value of items.
-struct MenuItem {
+struct MenuItem
+{
     string name;
     float price;
     int quantity = Quantity();
@@ -53,18 +57,22 @@ struct MenuItem {
 
 
 // A parent class with a function call flage(), used for display worning.
-class Flage{
-    protected:
-    string flage(){
+class Flage
+{
+protected:
+    string flage()
+    {
         return "WELCOME TO PANORAMIC_CAFETERIA YOU. \nPLEASE MAKE SURE TO READ DOCOMENTATION BEFORE ENTERING VALUES.";
     }
 };
 
 
 //Adding BreakFast item.
-class BreakFast : public Flage{
-private: 
-    vector<MenuItem> menuItems = {
+class BreakFast : public Flage
+{
+private:
+    vector<MenuItem> menuItems =
+    {
         {"Beef Chowmein",      150.00 },
         {"Chicken Chowmein",   110.00 },
         {"Khichuri",            70.00 },
@@ -81,64 +89,80 @@ private:
 
     friend void checkBreakFast(BreakFast);
 public:
-    void items() {
+    void items()
+    {
         cout << RED << flage() <<RESET << endl;
         cout << GREEN << "It's BRESKFAST time.." << RESET << endl <<endl ;
-        cout << "Note: To select food for order press number 1 to " << size(menuItems) <<" according to the list:" << endl << endl;
+        cout << "Note: To select food for order press number 1 to " << menuItems.size() <<" according to the list:" << endl << endl;
         cout << endl;
         itemsBar();
         cout << endl;
 
-        for (int i = 0; i < menuItems.size(); ++i) {
-            cout << left << setfill('.') << setw(2) 
-            << i + 1 << ". " << setw(25) << menuItems[i].name << ": " << setw(10) << fixed << setprecision(2) << menuItems[i].price << " tk.../" <<right <<setw(8) <<"0"<< menuItems[i].quantity << endl;
+        for (int i = 0; i < menuItems.size(); ++i)
+        {
+            cout << left << setfill('.') << setw(2)
+                 << i + 1 << ". " << setw(25) << menuItems[i].name << ": " << setw(10) << fixed << setprecision(2) << menuItems[i].price << " tk.../" <<right <<setw(8) <<"0"<< menuItems[i].quantity << endl;
         }
         cout << endl;
     }
-    float getPrice(int &index) {
+    float getPrice(int &index)
+    {
         return menuItems[index].price;
     }
 
-    float getQuantity(int &index) {
+    float getQuantity(int &index)
+    {
         return menuItems[index].quantity;
     }
 
-    void updateQuantity(int &index, int &qty) {
+    void updateQuantity(int &index, int &qty)
+    {
         menuItems[index].quantity -= qty;
     }
 
 };
 
-// Calculating orders and price for BreakFirst. 
-void checkBreakFast(BreakFast prObj) {
-     
+// Calculating orders and price for BreakFirst.
+void checkBreakFast(BreakFast prObj)
+{
+
     cout << endl << setw(5) <<setfill(' ') <<"" <<"Enter 0 to confirm the order."<<endl
-    << setw(5) <<"" <<"Enter your items number 1 to " << prObj.menuItems.size() <<" like (1 = Beef Kala Bhuna): ";
-    
+         << setw(5) <<"" <<"Enter your items number 1 to " << prObj.menuItems.size() <<" like (1 = Beef Kala Bhuna): ";
+
     float sum = 0;
-    int order, quantity; 
+    int order, quantity;
     cin >> order;
 
-    if (order == 0) {
+    if (order == 0)
+    {
         cout << setw(10) <<"" << "You have not ordered yet..." << endl;
-    } else {
-        while (order != 0) {
-            if (order >= 1 && order <= prObj.menuItems.size()) {
+    }
+    else
+    {
+        while (order != 0)
+        {
+            if (order >= 1 && order <= prObj.menuItems.size())
+            {
                 cout << setw(5) <<"" << "Enter the quantity: ";
                 cin >> quantity;
                 order-=1;
-                if(quantity > prObj.getQuantity(order )){
-                  cout << setw(5) <<"" << "Apologize sir, we're out of " << prObj.menuItems[order].name <<"." <<endl; 
-                }else{
+                if(quantity > prObj.getQuantity(order ))
+                {
+                    cout << setw(5) <<"" << "Apologize sir, we're out of " << prObj.menuItems[order].name <<"." <<endl;
+                }
+                else
+                {
                     cout << setw(5) <<"" << "You have ordered: " << prObj.menuItems[order ].name  <<", and the quantity is: " << quantity << "." << endl <<endl;
-                    
+
                     //Calculating totat price to pay.
                     sum += prObj.getPrice(order ) * quantity;
                     //Updating quantity.
-                    prObj.updateQuantity(order , quantity);
+                    prObj.updateQuantity(order, quantity);
                 }
-        
-            } else {
+
+            }
+            else
+            {
                 cout << setw(5) <<"" << endl <<  "Invalid item number." << endl << "Please enter a valid item number or 0 to confirm the order." << endl <<endl;
             }
             cout << setw(5) <<"" << "Enter your item number to continue purchase or 0 to confirm your selected order: ";
@@ -155,9 +179,11 @@ void checkBreakFast(BreakFast prObj) {
 
 
 //Adding Lunch item.
-class Lunch : public Flage{
+class Lunch : public Flage
+{
 private:
-    vector<MenuItem> menuItems = {
+    vector<MenuItem> menuItems =
+    {
         {"Beef Kala Bhuna", 160.00},
         {"Beef Bhuna",      130.00},
         {"Beef Biryani",    160.00},
@@ -171,63 +197,79 @@ private:
 
     friend void checkLunch(Lunch);
 public :
-    void items() {
+    void items()
+    {
         cout << RED << flage() <<RESET << endl;
         cout << GREEN << "It's Lunch time.." << RESET << endl;
-        cout << "Note: To select food for order press number 1 to " << size(menuItems) <<" according to the list:" << endl << endl;
+        cout << "Note: To select food for order press number 1 to " << menuItems.size() <<" according to the list:" << endl << endl;
         cout << endl;
         itemsBar();
         cout << endl;
 
-        for (int i = 0; i < menuItems.size(); ++i) {
-            cout << left << setfill('.') << setw(2) 
-            << i + 1 << ". " << setw(25) << menuItems[i].name << ": " << setw(10) << fixed << setprecision(2) << menuItems[i].price << " tk.../" <<right <<setw(8) <<"0"<< menuItems[i].quantity << endl;
+        for (int i = 0; i < menuItems.size(); ++i)
+        {
+            cout << left << setfill('.') << setw(2)
+                 << i + 1 << ". " << setw(25) << menuItems[i].name << ": " << setw(10) << fixed << setprecision(2) << menuItems[i].price << " tk.../" <<right <<setw(8) <<"0"<< menuItems[i].quantity << endl;
         }
         cout << endl;
     }
-    inline float getPrice(int &index) {
+    inline float getPrice(int &index)
+    {
         return menuItems[index].price;
     }
 
-    inline float getQuantity(int &index) {
+    inline float getQuantity(int &index)
+    {
         return menuItems[index].quantity;
     }
 
-    inline void updateQuantity(int &index, int &qty) {
+    inline void updateQuantity(int &index, int &qty)
+    {
         menuItems[index].quantity -= qty;
     }
 };
 
 // Calculating orders and price for Lunch.
-void checkLunch(Lunch prObj){
-   
+void checkLunch(Lunch prObj)
+{
+
     cout << endl << setw(5) <<setfill(' ') <<""  <<"Enter 0 to confirm the order."<<endl
-    << setw(10) <<"" <<"Enter your items number 1 to " << prObj.menuItems.size() <<" like (1 = Beef Kala Bhuna): ";
-    
+         << setw(10) <<"" <<"Enter your items number 1 to " << prObj.menuItems.size() <<" like (1 = Beef Kala Bhuna): ";
+
     float sum = 0;
-    int order, quantity; 
+    int order, quantity;
     cin >> order;
 
-    if (order == 0) {
+    if (order == 0)
+    {
         cout << setw(10) <<"" << "You have not ordered yet..." << endl;
-    } else {
-        while (order != 0) {
-            if (order >= 1 && order <= prObj.menuItems.size()) {
+    }
+    else
+    {
+        while (order != 0)
+        {
+            if (order >= 1 && order <= prObj.menuItems.size())
+            {
                 cout << setw(5) <<"" << "Enter the quantity: ";
                 cin >> quantity;
                 order-=1;
-                if(quantity > prObj.getQuantity(order )){
-                  cout << setw(5) <<"" << "Apologize sir, we're out of " << prObj.menuItems[order].name <<"." <<endl; 
-                }else{
+                if(quantity > prObj.getQuantity(order ))
+                {
+                    cout << setw(5) <<"" << "Apologize sir, we're out of " << prObj.menuItems[order].name <<"." <<endl;
+                }
+                else
+                {
                     cout << setw(5) <<"" << "You have ordered: " << prObj.menuItems[order ].name  <<", and the quantity is: " << quantity << "." << endl <<endl;
-                    
+
                     //Calculating totat price to pay.
                     sum += prObj.getPrice(order ) * quantity;
                     //Updating quantity.
-                    prObj.updateQuantity(order , quantity);
+                    prObj.updateQuantity(order, quantity);
                 }
-        
-            } else {
+
+            }
+            else
+            {
                 cout << setw(5) <<"" << endl <<  "Invalid item number." << endl << "Please enter a valid item number or 0 to confirm the order." << endl <<endl;
             }
             cout << setw(5) <<"" << "Enter your item number to continue purchase or 0 to confirm your selected order: ";
@@ -244,9 +286,11 @@ void checkLunch(Lunch prObj){
 
 
 //Adding Snacks item.
-class Snacks : public Flage{
+class Snacks : public Flage
+{
 private:
-    vector<MenuItem> menuItems = {
+    vector<MenuItem> menuItems =
+    {
         {"Grill Chicken Full",     300.00},
         {"Grill Chicken Half",     230.00},
         {"Grill Chicken Quater",   160.00},
@@ -275,64 +319,80 @@ private:
 
     friend void checkSnacks(Snacks);
 public :
-    void items() {
+    void items()
+    {
         cout << RED << flage() <<RESET << endl;
         cout << GREEN << "It's Snacks time.." << RESET << endl;
-        cout << "Note: To select food for order press number 1 to " << size(menuItems) <<" according to the list:" << endl << endl;
+        cout << "Note: To select food for order press number 1 to " << menuItems.size() <<" according to the list:" << endl << endl;
         cout << endl;
         itemsBar();
         cout << endl;
 
-        for (int i = 0; i < menuItems.size(); ++i) {
-            cout << left << setfill('.') << setw(2) 
-            << i + 1 << ". " << setw(25) << menuItems[i].name << ": " << setw(10) << fixed << setprecision(0) << menuItems[i].price << " tk.../" << right <<setw(8) <<"0"<< menuItems[i].quantity << endl;
+        for (int i = 0; i < menuItems.size(); ++i)
+        {
+            cout << left << setfill('.') << setw(2)
+                 << i + 1 << ". " << setw(25) << menuItems[i].name << ": " << setw(10) << fixed << setprecision(0) << menuItems[i].price << " tk.../" << right <<setw(8) <<"0"<< menuItems[i].quantity << endl;
         }
         cout << endl;
     }
-    inline float getPrice(int &index) {
+    inline float getPrice(int &index)
+    {
         return menuItems[index].price;
-    
+
     }
 
-    inline int getQuantity(int &index) {
+    inline int getQuantity(int &index)
+    {
         return menuItems[index].quantity;
     }
 
-    inline void updateQuantity(int &index, int &qty) {
+    inline void updateQuantity(int &index, int &qty)
+    {
         menuItems[index].quantity -= qty;
     }
 };
 
 // Calculating orders and price for Snacks.
-void checkSnacks(Snacks prObj){
+void checkSnacks(Snacks prObj)
+{
 
     cout << endl << setw(5) << setfill(' ') <<"" <<"Enter 0 to confirm the order."<<endl
-    << setw(5) <<"" <<"Enter your items number 1 to " << prObj.menuItems.size() <<" like (1 = Grill Chicken Full): ";
-    
+         << setw(5) <<"" <<"Enter your items number 1 to " << prObj.menuItems.size() <<" like (1 = Grill Chicken Full): ";
+
     float sum = 0;
-    int order, quantity; 
+    int order, quantity;
     cin >> order;
 
-    if (order == 0) {
+    if (order == 0)
+    {
         cout << setw(10) <<"" << "You have not ordered yet..." << endl;
-    } else {
-        while (order != 0) {
-            if (order >= 1 && order <= prObj.menuItems.size()) {
+    }
+    else
+    {
+        while (order != 0)
+        {
+            if (order >= 1 && order <= prObj.menuItems.size())
+            {
                 cout << setw(5) <<"" << "Enter the quantity: ";
                 cin >> quantity;
                 order-=1;
-                if(quantity > prObj.getQuantity(order )){
-                  cout << setw(5) <<"" << "Apologize sir, we're out of " << prObj.menuItems[order].name <<"." <<endl; 
-                }else{
+                if(quantity > prObj.getQuantity(order ))
+                {
+                    cout << setw(5) <<"" << "Apologize sir, we're out of " << prObj.menuItems[order].name <<"." <<endl;
+                }
+                else
+                {
                     cout << setw(5) <<"" << "You have ordered: " << prObj.menuItems[order ].name  <<", and the quantity is: " << quantity << "." << endl <<endl;
-                    
+
                     //Calculating totat price to pay.
                     sum += prObj.getPrice(order ) * quantity;
                     //Updating quantity.
-                    prObj.updateQuantity(order , quantity);
+                    prObj.updateQuantity(order, quantity);
                 }
-        
-            } else {
+
+            }
+            else
+            {
                 cout << setw(5) <<"" << endl <<  "Invalid item number." << endl << "Please enter a valid item number or 0 to confirm the order." << endl <<endl;
             }
             cout << setw(5) <<"" << "Enter your item number to continue purchase or 0 to confirm your selected order: ";
@@ -344,15 +404,17 @@ void checkSnacks(Snacks prObj){
     cout << endl;
     cout << setw(5) <<"" << GREEN << "Total check to pay: " << fixed << setprecision(2) << sum << " tk..."  << endl;
     cout << setw(5) <<"" << "--------------------------------" << RESET << endl << endl << endl << endl;
-    
+
 }
 
 
 
 //Adding Snacks item.
-class Dinner : public Flage{
+class Dinner : public Flage
+{
 private:
-    vector<MenuItem> menuItems = {
+    vector<MenuItem> menuItems =
+    {
         {"Beef_Kala_Bhuna",     300.00},
         {"Beef_Biryani",        130.00},
         {"Beef_Bhuna",          160.00},
@@ -375,66 +437,82 @@ private:
         {"Samosa",               10.00},
         {"Luchi",                10.00}
     };
-   
+
     friend void checkDinner(Dinner);
 public :
-    void items() {
+    void items()
+    {
         cout << RED << flage() <<RESET << endl;
         cout << GREEN << "It's Dinner time.." <<RESET << endl;
-        cout << "Note: To select food for order press number 1 to " << size(menuItems) <<" according to the list:" << endl << endl;
+        cout << "Note: To select food for order press number 1 to " << menuItems.size() <<" according to the list:" << endl << endl;
         cout << endl;
         itemsBar();
         cout << endl;
 
-        for (int i = 0; i < menuItems.size(); ++i) {
-            cout << left << setfill('.') << setw(2) 
-            << i + 1 << ". " << setw(25) << menuItems[i].name << ": " << setw(10) << fixed << setprecision(2) << menuItems[i].price << " tk.../" <<right <<setw(8) <<"0"<< menuItems[i].quantity << endl;
+        for (int i = 0; i < menuItems.size(); ++i)
+        {
+            cout << left << setfill('.') << setw(2)
+                 << i + 1 << ". " << setw(25) << menuItems[i].name << ": " << setw(10) << fixed << setprecision(2) << menuItems[i].price << " tk.../" <<right <<setw(8) <<"0"<< menuItems[i].quantity << endl;
         }
         cout << endl;
     }
-    inline float getPrice(int &index) {
+    inline float getPrice(int &index)
+    {
         return menuItems[index].price;
     }
 
-    inline float getQuantity(int &index) {
+    inline float getQuantity(int &index)
+    {
         return menuItems[index].quantity;
     }
 
-    inline void updateQuantity(int &index, int &qty) {
+    inline void updateQuantity(int &index, int &qty)
+    {
         menuItems[index].quantity -= qty;
     }
 };
 
 // Calculating orders and price for Dinner.
-void checkDinner(Dinner prObj){
+void checkDinner(Dinner prObj)
+{
 
     cout << endl << setw(5) <<setfill(' ') <<"" <<"Enter 0 to confirm the order."<<endl
-    << setw(5) <<"" <<"Enter your items number 0 to " << prObj.menuItems.size() <<" like (1 = Beef Kala Bhuna): ";
-    
+         << setw(5) <<"" <<"Enter your items number 0 to " << prObj.menuItems.size() <<" like (1 = Beef Kala Bhuna): ";
+
     float sum = 0;
-    int order, quantity; 
+    int order, quantity;
     cin >> order;
 
-    if (order == 0) {
+    if (order == 0)
+    {
         cout << setw(10) <<"" << "You have not ordered yet..." << endl;
-    } else {
-        while (order != 0) {
-            if (order >= 1 && order <= prObj.menuItems.size()) {
+    }
+    else
+    {
+        while (order != 0)
+        {
+            if (order >= 1 && order <= prObj.menuItems.size())
+            {
                 cout << setw(5) <<"" << "Enter the quantity: ";
                 cin >> quantity;
                 order-=1;
-                if(quantity > prObj.getQuantity(order )){
-                  cout << setw(5) <<"" << "Apologize sir, we're out of " << prObj.menuItems[order].name <<"." <<endl; 
-                }else{
+                if(quantity > prObj.getQuantity(order ))
+                {
+                    cout << setw(5) <<"" << "Apologize sir, we're out of " << prObj.menuItems[order].name <<"." <<endl;
+                }
+                else
+                {
                     cout << setw(5) <<"" << "You have ordered: " << prObj.menuItems[order ].name  <<", and the quantity is: " << quantity << "." << endl <<endl;
-                    
+
                     //Calculating totat price to pay.
                     sum += prObj.getPrice(order ) * quantity;
                     //Updating quantity.
-                    prObj.updateQuantity(order , quantity);
+                    prObj.updateQuantity(order, quantity);
                 }
-        
-            } else {
+
+            }
+            else
+            {
                 cout << setw(5) <<"" << endl <<  "Invalid item number." << endl << "Please enter a valid item number or 0 to confirm the order." << endl <<endl;
             }
             cout << setw(5) <<"" << "Enter your item number to continue purchase or 0 to confirm your selected order: ";
@@ -446,30 +524,40 @@ void checkDinner(Dinner prObj){
     cout << endl;
     cout << setw(5) <<"" << GREEN << "Total check to pay: " << fixed << setprecision(2) << sum << " tk..."  << endl;
     cout << setw(5) <<"" << "--------------------------------" << RESET << endl << endl << endl << endl;
-    
+
 }
 
 
-int main() {
+int main()
+{
 
     int time = currentTime();
 
-    if(time < 8 && time > 22) { 
+    if(time < 8 && time > 22)
+    {
         cout <<setw(33) <<".....SORRY! We're closed....." << endl<<endl;
-    } else if(time >= 8 && time < 11){
+    }
+    else if(time >= 8 && time < 11)
+    {
         BreakFast breakFast;
         breakFast.items();
         checkBreakFast(breakFast);
 
-    }else if(time >= 11 && time < 16) {
+    }
+    else if(time >= 11 && time < 16)
+    {
         Lunch lunch;
         lunch.items();
         checkLunch(lunch);
-    }else if (time >= 16 && time < 20) {
-        Snacks snacks; 
+    }
+    else if (time >= 16 && time < 20)
+    {
+        Snacks snacks;
         snacks.items();
         checkSnacks(snacks);
-    }else {
+    }
+    else
+    {
         Dinner dinner;
         dinner.items();
         checkDinner(dinner);
